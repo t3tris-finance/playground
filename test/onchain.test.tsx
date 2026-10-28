@@ -1,10 +1,40 @@
 import { describe, expect, test } from "bun:test";
 import { createT3trisClient } from "@t3tris/sdk";
 import { renderToStaticMarkup } from "react-dom/server";
+import {
+  createPublicClient,
+  createWalletClient,
+  custom,
+  type EIP1193Provider,
+  encodeAbiParameters,
+} from "viem";
 import { OnchainPlayground } from "../components/onchain-playground";
 import { inputJson, ONCHAIN_CALLS, onchainExample } from "../lib/onchain-calls";
 
 describe("on-chain playground", () => {
+  test("runs a viem wallet read through the installed SDK without API configuration", async () => {
+    const account = "0x1111111111111111111111111111111111111111" as const;
+    const asset = "0x2222222222222222222222222222222222222222" as const;
+    const methods: string[] = [];
+    const provider = {
+      request: async ({ method }: { method: string }) => {
+        methods.push(method);
+        if (method === "eth_chainId") return "0xa4b1";
+        if (method === "eth_call") return encodeAbiParameters([{ type: "address" }], [asset]);
+        throw new Error(`Unexpected method: ${method}`);
+      },
+    } as EIP1193Provider;
+    const transport = custom(provider);
+    const client = createT3trisClient({
+      walletClient: createWalletClient({ account, transport }),
+      publicClient: createPublicClient({ transport }),
+    });
+    const call = ONCHAIN_CALLS.find((entry) => entry.id === "vaults.read.asset");
+    if (!call) throw new Error("Missing wallet read");
+    expect(await call.run(client, inputJson(call.sample))).toBe(asset);
+    expect(methods).toEqual(["eth_chainId", "eth_call"]);
+    expect("catalog" in client).toBe(false);
+  });
   test("covers every wallet-mode SDK method exactly once", () => {
     const unavailable = async (): Promise<never> => {
       throw new Error("No IO during inventory");

@@ -42,6 +42,8 @@ describe("customer-key playground", () => {
       const code = playgroundExample(call, {});
       expect(code).toContain(`client.${call.id}(`);
       expect(code).not.toContain("sk_12345678");
+      expect(code).not.toContain("T3TRIS_API_URL");
+      expect(code).not.toContain("baseUrl");
     }
     expect(PLAYGROUND_CALLS.map((call) => call.id)).toContain("billing.getUsage");
     expect(PLAYGROUND_CALLS.map((call) => call.id)).not.toContain("usage.get");

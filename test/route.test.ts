@@ -1,4 +1,4 @@
-import { describe, expect, test } from "bun:test";
+import { describe, expect, spyOn, test } from "bun:test";
 import { POST } from "../app/api/playground/route";
 
 const request = (body: unknown) =>
@@ -9,6 +9,24 @@ const request = (body: unknown) =>
   });
 
 describe("same-origin SDK route", () => {
+  test("uses production with no API URL setting", async () => {
+    const previousUrl = process.env.T3TRIS_API_URL;
+    delete process.env.T3TRIS_API_URL;
+    const upstream = spyOn(globalThis, "fetch").mockResolvedValue(Response.json({ items: [] }));
+    try {
+      const response = await POST(
+        request({ call: "catalog.listChains", apiKey: "sk_customer_test", values: {} }),
+      );
+      expect(response.status).toBe(200);
+      expect(await response.json()).toEqual({ result: { items: [] } });
+      expect(upstream).toHaveBeenCalledTimes(1);
+      expect(upstream.mock.calls[0]?.[0]).toBe("https://api.t3tris.finance/v1/chains");
+    } finally {
+      upstream.mockRestore();
+      if (previousUrl === undefined) delete process.env.T3TRIS_API_URL;
+      else process.env.T3TRIS_API_URL = previousUrl;
+    }
+  });
   test("rejects missing credentials, malformed JSON and oversized input without caching", async () => {
     const inputs = [
       request({ call: "catalog.listChains", values: {} }),

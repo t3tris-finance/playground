@@ -13,10 +13,7 @@ export async function POST(request: Request): Promise<Response> {
     }
     const body: unknown = await request.json();
     const { call, values, apiKey, session } = parsePlaygroundInput(body);
-    const client = createT3trisClient({
-      baseUrl: process.env.T3TRIS_API_URL ?? "https://api.t3tris.finance",
-      apiKey,
-    });
+    const client = createT3trisClient({ apiKey });
     return Response.json(
       { result: (await runPlaygroundCall(client, call, values, session)) ?? null },
       {

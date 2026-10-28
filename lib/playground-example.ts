@@ -112,7 +112,7 @@ export function playgroundExample(call: PlaygroundCall, values: Values): string 
       ...page(values),
     });
   else if (id === "events.subscribe") {
-    return `import { createT3trisClient } from "@t3tris/sdk";\n\nconst client = createT3trisClient({\n  baseUrl: process.env.T3TRIS_API_URL,\n  apiKey: process.env.T3TRIS_API_KEY,\n});\n\n// Run on your backend; keep the key in server environment variables.\nfor await (const result of client.events.subscribe(${params({ since: integer(values, "since"), types: csv(text(values, "types")) })})) {\n  console.log(result);\n}`;
+    return `import { createT3trisClient } from "@t3tris/sdk";\n\nconst client = createT3trisClient({\n  apiKey: process.env.T3TRIS_API_KEY,\n});\n\n// Run on your backend; keep the key in server environment variables.\nfor await (const result of client.events.subscribe(${params({ since: integer(values, "since"), types: csv(text(values, "types")) })})) {\n  console.log(result);\n}`;
   } else if (id.startsWith("keys.") && !id.endsWith("listVaults"))
     args = params({
       address: text(values, "address") ?? "0x0000000000000000000000000000000000000000",
@@ -134,5 +134,5 @@ export function playgroundExample(call: PlaygroundCall, values: Values): string 
       password: text(values, "password") ?? "<password>",
     });
   else if (id === "auth.whoami") args = sess;
-  return `import { createT3trisClient } from "@t3tris/sdk";\n\n// Run on your backend; keep the key in server environment variables.\nconst client = createT3trisClient({\n  baseUrl: process.env.T3TRIS_API_URL,\n  apiKey: process.env.T3TRIS_API_KEY,\n});\n${call.session ? "// Set T3TRIS_SESSION to your own authenticated ss_ session.\n" : ""}\nconst result = await client.${id}(${args});\nconsole.log(result);`;
+  return `import { createT3trisClient } from "@t3tris/sdk";\n\n// Run on your backend; keep the key in server environment variables.\nconst client = createT3trisClient({\n  apiKey: process.env.T3TRIS_API_KEY,\n});\n${call.session ? "// Set T3TRIS_SESSION to your own authenticated ss_ session.\n" : ""}\nconst result = await client.${id}(${args});\nconsole.log(result);`;
 }

@@ -24,9 +24,6 @@ Protected writes also require a session token. Vault queries return the vaults a
 API requests run through the playground server. Credentials are held in page memory
 and are not saved in browser storage. Use only a server you trust.
 
-To use a different API, copy `.env.example` to `.env.local`, set `T3TRIS_API_URL`
-and restart the app.
-
 ## On-chain
 
 Select a method to view its payload and viem example. To execute it, connect a
