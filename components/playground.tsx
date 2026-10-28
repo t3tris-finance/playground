@@ -19,7 +19,7 @@ const SORTED_PLAYGROUND_CALLS = [...PLAYGROUND_CALLS].sort((a, b) => a.id.locale
 
 // Use the same revision as package.json until the SDK is published on npm.
 const SDK_PACKAGE =
-  "git+ssh://git@github.com/t3tris-finance/sdk.git#5987866a3eb197bd7eab6d082060159775836bdb";
+  "git+https://github.com/t3tris-finance/sdk.git#5987866a3eb197bd7eab6d082060159775836bdb";
 const INSTALLERS = [
   { id: "npm", command: `npm install ${SDK_PACKAGE}` },
   { id: "bun", command: `bun add ${SDK_PACKAGE}` },
@@ -159,7 +159,8 @@ export function Playground() {
         <p className="text-sm text-muted-foreground">
           Make calls from your backend with your own key. In the playground below, paste your key to
           try a call through the playground server without putting credentials in example code. The
-          SDK currently requires SSH access to t3tris-finance/sdk on GitHub.
+          SDK installs from its public GitHub repository over HTTPS, with no GitHub authentication
+          required.
         </p>
         <div className="flex flex-wrap gap-1">
           {INSTALLERS.map((item) => (

@@ -5,12 +5,13 @@ Choose a call, enter its inputs, and inspect the JSON response alongside a copya
 
 ## Run locally
 
-Requires **Node.js 22+**, **Bun 1.4+**, and GitHub SSH access to this repo and
-[`t3tris-finance/sdk`](https://github.com/t3tris-finance/sdk). The SDK is not on npm yet;
-this app installs it from GitHub at a pinned commit.
+Requires **Node.js 22+**, **Bun 1.4+**, and **Git**. The SDK is not on npm yet.
+This app installs it from its public GitHub repository over HTTPS at a pinned commit,
+without an SSH key or GitHub authentication. If this playground repo is private,
+you still need GitHub access to clone it.
 
 ```sh
-git clone git@github.com:t3tris-finance/playground.git
+git clone https://github.com/t3tris-finance/playground.git
 cd playground
 bun install --frozen-lockfile
 bun dev
