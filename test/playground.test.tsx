@@ -14,7 +14,8 @@ describe("customer-key playground", () => {
     expect(html).not.toContain("Session token (ss_");
     expect(html).toContain("disabled");
     expect(html).not.toContain("npm install @t3tris/sdk");
-    expect(html).toContain("npm install git+https://github.com/t3tris-finance/sdk.git#");
+    expect(html).not.toContain("Install the SDK");
+    expect(html).not.toContain("same-origin BFF");
     expect(html).not.toContain("git+ssh:");
     expect(html).not.toContain("requires SSH access");
   });

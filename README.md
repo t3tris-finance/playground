@@ -1,14 +1,10 @@
-# T3tris Playground
+# T3tris SDK Playground
 
-A standalone Next.js demo for the [T3tris SDK](https://github.com/t3tris-finance/sdk).
-Choose a call, enter its inputs, and inspect the JSON response alongside a copyable TypeScript example.
+Explore API and on-chain methods, edit their inputs, and copy ready-to-use TypeScript examples.
 
-## Run locally
+## Quick start
 
-Requires **Node.js 22+**, **Bun 1.4+**, and **Git**. The SDK is not on npm yet.
-This app installs it from its public GitHub repository over HTTPS at a pinned commit,
-without an SSH key or GitHub authentication. If this playground repo is private,
-you still need GitHub access to clone it.
+Requires [Bun 1.4+](https://bun.sh), Node.js 22+ and Git.
 
 ```sh
 git clone https://github.com/t3tris-finance/playground.git
@@ -17,38 +13,39 @@ bun install --frozen-lockfile
 bun dev
 ```
 
-Open **http://localhost:3000**, paste your customer `sk_…` API key, select
-`catalog.listChains`, and click **Run call**. Obtain a customer key from your
-[T3tris Curate](https://curate.t3tris.finance/premium) organisation. No database, Docker, or monorepo checkout is needed.
+Open **http://localhost:3000**.
 
-The app uses `https://api.t3tris.finance` by default. To use another API:
+## API
+
+Enter a customer API key from [T3tris Curate](https://curate.t3tris.finance/premium),
+select a method and click **Run call**. Start with `catalog.listChains`.
+Protected writes also require a session token. Vault queries return the vaults attached to your key.
+
+API requests run through the playground server. Credentials are held in page memory
+and are not saved in browser storage. Use only a server you trust.
+
+To use a different API, copy `.env.example` to `.env.local`, set `T3TRIS_API_URL`
+and restart the app.
+
+## On-chain
+
+Select a method to view its payload and viem example. To execute it, connect a
+wallet extension, select the correct network in your wallet and enter the target
+addresses. Amounts use raw token units, represented as integer strings in the editor.
+
+Each write submits one transaction. Network switching, token approvals and Permit2
+signatures are separate, explicit operations. A `submitted` result is not a mining
+confirmation. A `proposed` result must be executed through the contract wallet.
+
+**Calls use live data. Transactions spend real gas and may move funds or change permissions.**
+Review the payload before confirming a write.
+
+## Production build
 
 ```sh
-cp .env.example .env.local
-# Edit T3TRIS_API_URL (API origin only, without /v1), then restart bun dev.
-```
-
-## Credentials and live data
-
-- Calls go through the same-origin `/api/playground` server route using **your entered key**.
-  There is no bundled or shared API key. Only run this app on a server you trust.
-- Keys and sessions stay in page memory, are sent to that server per call, and are
-  not saved to browser storage or included in generated example credentials.
-- This is **not a sandbox**: writes affect the configured API and count towards
-  your quota. Protected writes need your own `ss_…` session; login or SIWE verification
-  fills it automatically. SIWE signing requires an injected wallet extension.
-- Customer vault lists contain only vaults attached to that key. Key attach/detach
-  calls require the `manage` scope. Live events require `stream`.
-
-## Commands
-
-```sh
-bun run lint
-bun run typecheck
-bun test
 bun run build
-bun start              # serve the production build on :3000
+bun start
 ```
 
-The repo contains only the playground, its two local UI components, and tests.
-SDK calls execute server-side; the browser imports only the SDK wallet helpers for SIWE signing.
+[SDK documentation](https://github.com/t3tris-finance/sdk#readme) ·
+[Report an issue](https://github.com/t3tris-finance/playground/issues)

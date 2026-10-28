@@ -23,13 +23,14 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",
-    "@t3tris/sdk": "git+https://github.com/t3tris-finance/sdk.git#5987866a3eb197bd7eab6d082060159775836bdb",
+    "@t3tris/sdk": "git+https://github.com/t3tris-finance/sdk.git#354d0b68d3c33a06f95674f37e9c2b613820bdb2",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.2.6",
     "lucide-react": "^1.41.0",
     "next": "16.4.2",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "viem": "^2.56.8"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.12",

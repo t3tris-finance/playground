@@ -1,7 +1,6 @@
 "use client";
 
 import { injectedProvider, requestAccounts } from "@t3tris/sdk/wallet";
-import { Check, Copy } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,16 +15,6 @@ import { playgroundExample } from "@/lib/playground-example";
 import { CodePanel, ResponsePanel } from "./playground-panels";
 
 const SORTED_PLAYGROUND_CALLS = [...PLAYGROUND_CALLS].sort((a, b) => a.id.localeCompare(b.id));
-
-// Use the same revision as package.json until the SDK is published on npm.
-const SDK_PACKAGE =
-  "git+https://github.com/t3tris-finance/sdk.git#5987866a3eb197bd7eab6d082060159775836bdb";
-const INSTALLERS = [
-  { id: "npm", command: `npm install ${SDK_PACKAGE}` },
-  { id: "bun", command: `bun add ${SDK_PACKAGE}` },
-  { id: "yarn", command: `yarn add ${SDK_PACKAGE}` },
-  { id: "pnpm", command: `pnpm add ${SDK_PACKAGE}` },
-] as const;
 
 type Failure = { code: string; message: string };
 
@@ -45,7 +34,6 @@ export function sessionFromResult(callId: string, result: unknown): string | und
 }
 
 export function Playground() {
-  const [installer, setInstaller] = useState<(typeof INSTALLERS)[number]["id"]>("npm");
   const [callId, setCallId] = useState("catalog.listChains");
   const [apiKey, setApiKey] = useState("");
   const [session, setSession] = useState("");
@@ -55,24 +43,7 @@ export function Playground() {
   const [running, setRunning] = useState(false);
   const [signing, setSigning] = useState(false);
   const [signature, setSignature] = useState("");
-  const [copied, setCopied] = useState(false);
   const call = PLAYGROUND_CALLS.find((item) => item.id === callId) ?? PLAYGROUND_CALLS[0];
-  const command =
-    INSTALLERS.find((item) => item.id === installer)?.command ?? INSTALLERS[0].command;
-
-  async function copy(value: string) {
-    try {
-      await navigator.clipboard.writeText(value);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1500);
-    } catch {
-      setError({
-        code: "copy_unavailable",
-        message: "Clipboard unavailable. Select and copy the text manually.",
-      });
-    }
-  }
-
   async function signNonce() {
     const message =
       typeof result === "object" && result !== null && "message" in result
@@ -154,53 +125,7 @@ export function Playground() {
 
   return (
     <div className="flex flex-col gap-8">
-      <section className="flex flex-col gap-3">
-        <h2 className="text-lg font-semibold">Install the SDK</h2>
-        <p className="text-sm text-muted-foreground">
-          Make calls from your backend with your own key. In the playground below, paste your key to
-          try a call through the playground server without putting credentials in example code. The
-          SDK installs from its public GitHub repository over HTTPS, with no GitHub authentication
-          required.
-        </p>
-        <div className="flex flex-wrap gap-1">
-          {INSTALLERS.map((item) => (
-            <Button
-              key={item.id}
-              type="button"
-              size="sm"
-              variant={installer === item.id ? "default" : "outline"}
-              onClick={() => setInstaller(item.id)}
-            >
-              {item.id}
-            </Button>
-          ))}
-        </div>
-        <div className="flex min-w-0 items-center border border-border bg-muted/30">
-          <code className="min-w-0 flex-1 overflow-x-auto px-3 py-2 font-mono text-xs">
-            {command}
-          </code>
-          <Button
-            type="button"
-            variant="ghost"
-            className="rounded-none border-l"
-            onClick={() => void copy(command)}
-          >
-            {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
-            {copied ? "Copied" : "Copy"}
-          </Button>
-        </div>
-      </section>
-
-      <section className="flex flex-col gap-4 border-t border-border pt-6">
-        <div>
-          <h2 className="text-lg font-semibold">SDK playground</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Paste your customer key to try an SDK call through this same-origin BFF. Protected
-            writes require your own session. Successful login or SIWE verification fills it in
-            automatically. Credentials stay in this page's memory and never appear in the copyable
-            backend example.
-          </p>
-        </div>
+      <section className="flex flex-col gap-4">
         <label className="flex flex-col gap-1.5 text-sm">
           Customer API key
           <input
