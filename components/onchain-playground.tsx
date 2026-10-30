@@ -1,7 +1,7 @@
 "use client";
 
 import { createT3trisClient } from "@t3tris/sdk";
-import { injectedProvider } from "@t3tris/sdk/wallet";
+import { injectedProvider } from "@t3tris/sdk/onchain";
 import { useState } from "react";
 import { type Address, createPublicClient, createWalletClient, custom } from "viem";
 import { Button } from "@/components/ui/button";

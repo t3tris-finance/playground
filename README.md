@@ -2,6 +2,9 @@
 
 Explore API and on-chain methods, edit their inputs, and copy ready-to-use TypeScript examples.
 
+Uses SDK 0.3.0. Both modes use `createT3trisClient` from `@t3tris/sdk`.
+Optional protocol and provider helpers come from `@t3tris/sdk/onchain`.
+
 ## Quick start
 
 Requires [Bun 1.4+](https://bun.sh), Node.js 22+ and Git.

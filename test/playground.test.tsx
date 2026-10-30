@@ -1,4 +1,5 @@
 import { describe, expect, test } from "bun:test";
+import { createT3trisClient } from "@t3tris/sdk";
 import { renderToStaticMarkup } from "react-dom/server";
 import { Playground, sessionFromResult } from "../components/playground";
 import { CodePanel, ResponsePanel } from "../components/playground-panels";
@@ -37,7 +38,12 @@ describe("customer-key playground", () => {
         values: { address: "0xdead" },
       }),
     ).toThrow("Invalid input: address");
-    expect(PLAYGROUND_CALLS).toHaveLength(34);
+    const client = createT3trisClient({ apiKey: "sk_inventory_only" });
+    const methods = Object.entries(client).flatMap(([namespace, entries]) =>
+      Object.keys(entries).map((method) => `${namespace}.${method}`),
+    );
+    expect(PLAYGROUND_CALLS.map((call) => call.id).sort()).toEqual(methods.sort());
+    expect(PLAYGROUND_CALLS).toHaveLength(36);
     for (const call of PLAYGROUND_CALLS) {
       const code = playgroundExample(call, {});
       expect(code).toContain(`client.${call.id}(`);

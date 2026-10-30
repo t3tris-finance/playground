@@ -304,6 +304,10 @@ export async function runPlaygroundCall(
       });
     case "auth.whoami":
       return client.auth.whoami(auth as { session: string });
+    case "auth.logout":
+      return client.auth.logout(auth as { session: string });
+    case "auth.logoutAll":
+      return client.auth.logoutAll(auth as { session: string });
     default:
       throw new PlaygroundInputError("Unknown SDK call.");
   }

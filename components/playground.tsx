@@ -1,6 +1,6 @@
 "use client";
 
-import { injectedProvider, requestAccounts } from "@t3tris/sdk/wallet";
+import { injectedProvider, requestAccounts } from "@t3tris/sdk/onchain";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -116,6 +116,7 @@ export function Playground() {
       setResult(body.result);
       const issued = sessionFromResult(callId, body.result);
       if (issued) setSession(issued);
+      if (callId === "auth.logout" || callId === "auth.logoutAll") setSession("");
     } catch {
       setError({ code: "network", message: "Could not reach the playground server." });
     } finally {

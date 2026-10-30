@@ -422,4 +422,20 @@ export const PLAYGROUND_CALLS: readonly PlaygroundCall[] = [
     session: true,
     fields: [],
   },
+  {
+    id: "auth.logout",
+    namespace: "auth",
+    method: "logout",
+    description: "Revoke the supplied session.",
+    session: true,
+    fields: [],
+  },
+  {
+    id: "auth.logoutAll",
+    namespace: "auth",
+    method: "logoutAll",
+    description: "Revoke every session of this account, including sessions in other applications.",
+    session: true,
+    fields: [],
+  },
 ];
