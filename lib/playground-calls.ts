@@ -354,7 +354,7 @@ export const PLAYGROUND_CALLS: readonly PlaygroundCall[] = [
     id: "keys.listVaults",
     namespace: "keys",
     method: "listVaults",
-    description: "List vaults attached to this key.",
+    description: "Return all attached vaults as an array (no pagination).",
     fields: [],
   },
   {

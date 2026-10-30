@@ -1,4 +1,4 @@
-import type { Address, T3trisWalletClient } from "@t3tris/sdk";
+import type { Address, SettleInput, T3trisWalletClient } from "@t3tris/sdk";
 import type { Hex } from "viem";
 
 const address = "0x1111111111111111111111111111111111111111" as Address;
@@ -16,8 +16,16 @@ export interface OnchainCall {
   run(client: T3trisWalletClient, json: string): Promise<unknown>;
 }
 
+type OnchainInput =
+  | string
+  | number
+  | boolean
+  | bigint
+  | OnchainInput[]
+  | { [key: string]: OnchainInput };
+
 /** Match editable JSON to the example's structure; raw integer amounts are decimal strings. */
-function parseLike(value: unknown, template: unknown, path = "input"): unknown {
+function parseLike(value: unknown, template: unknown, path = "input"): OnchainInput {
   const field = path.split(".").at(-1);
   if (field === "kind" && !["both", "deposits", "redemptions"].includes(String(value)))
     throw new Error(`${path}: choose both, deposits or redemptions.`);
@@ -57,6 +65,8 @@ function parseLike(value: unknown, template: unknown, path = "input"): unknown {
       String(value).length !== 66
     )
       throw new Error(`${path}: expected 32 bytes.`);
+    if (typeof value !== "string" && typeof value !== "boolean")
+      throw new Error(`${path}: expected a string or boolean.`);
     return value;
   }
   if (Array.isArray(template)) {
@@ -81,6 +91,32 @@ function parseLike(value: unknown, template: unknown, path = "input"): unknown {
   throw new Error(`${path}: unsupported input.`);
 }
 
+function parseInput(json: string, sample: unknown): OnchainInput {
+  let value: unknown;
+  try {
+    value = JSON.parse(json);
+  } catch {
+    throw new Error("Payload must be valid JSON.");
+  }
+  return parseLike(value, inputTemplate(value, sample));
+}
+
+function inputTemplate<T>(value: unknown, sample: T) {
+  if (
+    typeof sample === "object" &&
+    sample !== null &&
+    "kind" in sample &&
+    typeof value === "object" &&
+    value !== null &&
+    "kind" in value &&
+    value.kind === "redemptions"
+  ) {
+    const { feeClaimType: _feeClaimType, ...common } = sample as Record<string, unknown>;
+    return { ...common, kind: "redemptions", fullClaim: false };
+  }
+  return sample;
+}
+
 function call<T>(
   id: string,
   write: boolean,
@@ -93,7 +129,7 @@ function call<T>(
     sample,
     run: (client, json) => {
       // SAFETY: parseLike checks every field against the typed sample, including bigint conversion.
-      const input = parseLike(JSON.parse(json), sample) as T;
+      const input = parseInput(json, sample) as T;
       return invoke(client, input);
     },
   };
@@ -190,7 +226,7 @@ export const ONCHAIN_CALLS: readonly OnchainCall[] = [
       unsafe: false,
       permit2Data: "0x" as Hex,
     },
-    (c, i) => c.vaults.settle(i),
+    (c, i) => c.vaults.settle(i as SettleInput),
   ),
   call("vaults.setNextManagementFee", true, { ...vault, wad: 10n ** 16n, days: 365 }, (c, i) =>
     c.vaults.setNextManagementFee(i),
@@ -482,6 +518,6 @@ function typescript(value: unknown, level = 0): string {
 }
 
 export function onchainExample(call: OnchainCall, json: string): string {
-  const input = parseLike(JSON.parse(json), call.sample);
+  const input = parseInput(json, call.sample);
   return `import { createT3trisClient } from "@t3tris/sdk";\nimport { createPublicClient, createWalletClient, custom } from "viem";\n\n// provider and account come from your app's existing wallet connection.\nconst transport = custom(provider);\nconst walletClient = createWalletClient({ account, transport });\nconst publicClient = createPublicClient({ transport });\nconst client = createT3trisClient({ walletClient, publicClient });\n\n// Select the correct network in your app before this call.\n${call.write ? "// Submit only this action. Approvals/permits must be prepared separately.\n" : ""}const result = await client.${call.id}(${typescript(input)});\n${call.write ? '\n// A submitted hash is not confirmation. Safe proposals execute in the wallet.\nif (result.status === "submitted") {\n  const receipt = await publicClient.waitForTransactionReceipt({ hash: result.hash });\n  if (receipt.status === "reverted") throw new Error("Transaction reverted");\n}\n' : ""}`;
 }

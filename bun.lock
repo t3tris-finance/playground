@@ -6,7 +6,7 @@
       "name": "@t3tris/playground",
       "dependencies": {
         "@base-ui/react": "^1.8.0",
-        "@t3tris/sdk": "git+https://github.com/t3tris-finance/sdk.git#a64d6563db5db5f34878ed39b51ef7947d57a0a1",
+        "@t3tris/sdk": "git+https://github.com/t3tris-finance/sdk.git#10e27d9a0f5eb40103d5fa2e35d8f1a68ae9c0e1",
         "class-variance-authority": "^0.7.1",
         "cn": "^0.2.6",
         "lucide-react": "^1.41.0",
@@ -163,7 +163,7 @@
 
     "@swc/helpers": ["@swc/helpers@0.5.23", "", { "dependencies": { "tslib": "^2.8.0" } }, "sha512-5lSsMOTXURePglDfvuAQUqkGek9Hg2kksOYay2m0+XR++b2NWYL/4sWyuvVBIs8oKnJaxkdi9whaL/sqN13afw=="],
 
-    "@t3tris/sdk": ["@t3tris/sdk@github:t3tris-finance/sdk#a64d656", { "dependencies": { "viem": "^2.56.8" } }, "t3tris-finance-sdk-a64d656", "sha512-BMVdGqjgc9M9+sJsBV5ZpC5t83SDntOcJwl8KoAI3vEIj7oNIQTl9chfT80hc1uypAUQHBby558NmAYvE8Jr5Q=="],
+    "@t3tris/sdk": ["@t3tris/sdk@github:t3tris-finance/sdk#10e27d9", { "dependencies": { "viem": "^2.56.8" } }, "t3tris-finance-sdk-10e27d9", "sha512-jjDGAzMy8CXxY++e7O81wkH0NVMYfXR14mlPr0rhTwFQCBiewX57t6U+HZLEOwjN7YHV7nLjjJVZ/0oE/Xz58w=="],
 
     "@tailwindcss/node": ["@tailwindcss/node@4.3.3", "", { "dependencies": { "@jridgewell/remapping": "^2.3.5", "enhanced-resolve": "^5.24.1", "jiti": "^2.7.0", "lightningcss": "1.32.0", "magic-string": "^0.30.21", "source-map-js": "^1.2.1", "tailwindcss": "4.3.3" } }, "sha512-/T8IKEsf9VTU6tLjgC7+sv2mOPtQxzE2jMw7u4Tt40Tx+QSZxpzh95/H6cMKoja9XuW7iMdLJYBB0o9G1CaAgg=="],
 
