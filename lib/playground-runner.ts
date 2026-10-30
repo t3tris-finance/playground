@@ -274,7 +274,7 @@ export async function runPlaygroundCall(
         chainId: numberValue(values, "chainId", "Chain ID", "optional"),
       });
     case "keys.listVaults":
-      return client.keys.listVaults();
+      return client.keys.listVaults(page(values));
     case "keys.lookupVaults":
       return client.keys.lookupVaults({
         address: address(values, "address", "Vault address"),

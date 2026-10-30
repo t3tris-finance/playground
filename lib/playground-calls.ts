@@ -354,8 +354,11 @@ export const PLAYGROUND_CALLS: readonly PlaygroundCall[] = [
     id: "keys.listVaults",
     namespace: "keys",
     method: "listVaults",
-    description: "Return all attached vaults as an array (no pagination).",
-    fields: [],
+    description: "List attached vaults with cursor pagination (default 50, maximum 200).",
+    fields: [
+      { key: "limit", label: "Limit (1–200)", kind: "number" },
+      { key: "cursor", label: "Cursor", kind: "text" },
+    ],
   },
   {
     id: "keys.lookupVaults",

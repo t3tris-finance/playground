@@ -118,6 +118,7 @@ export function playgroundExample(call: PlaygroundCall, values: Values): string 
       address: text(values, "address") ?? "0x0000000000000000000000000000000000000000",
       chainId: integer(values, "chainId"),
     });
+  else if (id === "keys.listVaults") args = params(page(values));
   else if (id === "auth.createSiweNonce")
     args = params({
       address: text(values, "address") ?? "0x0000000000000000000000000000000000000000",
