@@ -1,4 +1,4 @@
-import type { Address, SettleInput, T3trisWalletClient } from "@t3tris/sdk";
+import type { Address, DeployVaultArgs, SettleInput, T3trisWalletClient } from "@t3tris/sdk";
 import type { Hex } from "viem";
 
 const address = "0x1111111111111111111111111111111111111111" as Address;
@@ -78,14 +78,28 @@ function parseLike(value: unknown, template: unknown, path = "input"): OnchainIn
     if (typeof value !== "object" || value === null || Array.isArray(value))
       throw new Error(`${path}: expected an object.`);
     const source = value as Record<string, unknown>;
-    const shape = template as Record<string, unknown>;
+    let shape = template as Record<string, unknown>;
+    const optional = new Set<string>();
+    if (path === "input.oracle" && "safe" in shape) {
+      if (source.safe === true) {
+        shape = { safe: true, owner: shape.owner, maxDeviationUp: 0n, maxDeviationDown: 0n };
+        optional.add("maxDeviationUp");
+        optional.add("maxDeviationDown");
+      } else {
+        shape = { address };
+      }
+    }
+    if (path === "input.config") optional.add("ipfsHash");
+    if (path === "input.deployment") {
+      shape = { ...shape, referralCode: bytes32 };
+      optional.add("referralCode");
+    }
     if (Object.keys(source).some((key) => !(key in shape)))
       throw new Error(`${path}: unknown field.`);
     return Object.fromEntries(
-      Object.entries(shape).map(([key, child]) => [
-        key,
-        parseLike(source[key], child, `${path}.${key}`),
-      ]),
+      Object.entries(shape)
+        .filter(([key]) => !optional.has(key) || source[key] !== undefined)
+        .map(([key, child]) => [key, parseLike(source[key], child, `${path}.${key}`)]),
     );
   }
   throw new Error(`${path}: unsupported input.`);
@@ -141,35 +155,28 @@ export const ONCHAIN_CALLS: readonly OnchainCall[] = [
     true,
     {
       chainId: 42161,
-      salt: bytes32,
-      oracle: address,
-      safeOracle: {
-        owner: address,
-        maxDeviationUpWad: 10n ** 16n,
-        maxDeviationDownWad: 10n ** 16n,
-      },
-      params: {
-        shareName: "My Vault",
-        shareSymbol: "mvUSDC",
+      name: "My Vault",
+      symbol: "mvUSDC",
+      asset: address,
+      owner: address,
+      curator: address,
+      feeRecipient: address,
+      config: {
         ipfsHash: "",
-        underlyingAsset: address,
-        oracle: address,
-        vaultOwner: address,
-        curator: address,
-        feeRecipient: address,
         transferEnabled: true,
-        depositEnabled: false,
+        depositEnabled: true,
         depositWhitelistEnabled: false,
         withdrawWhitelistEnabled: false,
-        globalFees: {
-          entryFeeWad: 0n,
-          exitFeeWad: 0n,
-          managementFeeWad: 0n,
-          performanceFeeWad: 0n,
-          managementFeeDays: 365,
-        },
       },
-    },
+      fees: { entry: 0n, exit: 0n, performance: 0n, management: 0n, managementDays: 365 },
+      oracle: {
+        safe: true,
+        owner: address,
+        maxDeviationUp: (1n << 128n) - 1n,
+        maxDeviationDown: 10n ** 18n,
+      },
+      deployment: { salt: bytes32 },
+    } as DeployVaultArgs,
     (c, i) => c.vaults.create(i),
   ),
   call(
