@@ -20,7 +20,7 @@ describe("same-origin SDK route", () => {
       expect(response.status).toBe(200);
       expect(await response.json()).toEqual({ result: { items: [] } });
       expect(upstream).toHaveBeenCalledTimes(1);
-      expect(upstream.mock.calls[0]?.[0]).toBe("https://api.t3tris.finance/v1/chains");
+      expect(upstream.mock.calls[0]?.[0]).toBe("https://api.t3tris.finance/v0/chains");
     } finally {
       upstream.mockRestore();
       if (previousUrl === undefined) delete process.env.T3TRIS_API_URL;
@@ -73,7 +73,7 @@ describe("same-origin SDK route", () => {
       expect(await response.json()).toEqual({ result: { items: [{ id: 42161 }] } });
       expect(response.headers.get("cache-control")).toBe("no-store");
       expect(calls[0]).toEqual({
-        path: "/v1/chains",
+        path: "/v0/chains",
         authorization: "Bearer sk_customer_test",
         session: null,
       });

@@ -2,7 +2,9 @@
 
 Explore API and on-chain methods, edit their inputs, and copy ready-to-use TypeScript examples.
 
-Uses SDK [v0.6.0](https://github.com/t3tris-finance/sdk/tree/v0.6.0).
+Uses SDK [v0.7.0](https://github.com/t3tris-finance/sdk/tree/v0.7.0).
+API `/v0` and SDK `0.x` are unstable: breaking changes may occur before `/v1`
+and SDK `1.0.0`. Pinning the SDK does not freeze the API server.
 Both modes use `createT3trisClient` from `@t3tris/sdk`.
 Optional protocol and provider helpers come from `@t3tris/sdk/onchain`.
 
