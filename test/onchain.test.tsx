@@ -82,7 +82,7 @@ describe("on-chain playground", () => {
     if (!call) throw new Error("missing call");
     const input = {
       chainId: 42161,
-      vault: "0x1111111111111111111111111111111111111111",
+      address: "0x1111111111111111111111111111111111111111",
       wad: "1234567890123456789",
     };
     expect(onchainExample(call, JSON.stringify(input))).toContain("1234567890123456789n");

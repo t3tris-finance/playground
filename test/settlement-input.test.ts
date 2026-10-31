@@ -6,7 +6,7 @@ test("redemption settlement accepts fullClaim and rejects deposit fee options", 
   if (!call) throw new Error("Missing settlement call");
   const input = {
     chainId: 42161,
-    vault: "0x1111111111111111111111111111111111111111",
+    address: "0x1111111111111111111111111111111111111111",
     kind: "redemptions",
     fullClaim: true,
     unsafe: false,

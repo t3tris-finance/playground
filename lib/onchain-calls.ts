@@ -3,7 +3,7 @@ import type { Hex } from "viem";
 
 const address = "0x1111111111111111111111111111111111111111" as Address;
 const bytes32 = `0x${"00".repeat(32)}` as Hex;
-const vault = { chainId: 42161, vault: address };
+const vault = { chainId: 42161, address };
 const oracle = { chainId: 42161, oracle: address };
 const role = { ...vault, role: bytes32 };
 const oracleRole = { ...oracle, role: bytes32, account: address };
