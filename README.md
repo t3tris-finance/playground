@@ -2,8 +2,8 @@
 
 Explore API and on-chain methods, edit their inputs, and copy ready-to-use TypeScript examples.
 
-This branch previews unreleased SDK 0.6.0 key management. The dependency is pinned
-to a reviewed draft commit; no 0.6 release tag has been published. Both modes use `createT3trisClient` from `@t3tris/sdk`.
+Uses SDK [v0.6.0](https://github.com/t3tris-finance/sdk/tree/v0.6.0).
+Both modes use `createT3trisClient` from `@t3tris/sdk`.
 Optional protocol and provider helpers come from `@t3tris/sdk/onchain`.
 
 ## Quick start
