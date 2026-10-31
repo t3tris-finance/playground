@@ -8,7 +8,8 @@ Optional protocol and provider helpers come from `@t3tris/sdk/onchain`.
 
 ## Quick start
 
-Requires [Bun 1.4+](https://bun.sh), Node.js 22+ and Git.
+Requires [Bun 1.4+](https://bun.sh), Node.js 26 LTS (`.nvmrc`) and Git.
+The playground application uses Node.js 26; the SDK itself supports Node.js 22+.
 
 ```sh
 git clone https://github.com/t3tris-finance/playground.git

@@ -6,7 +6,7 @@
   "type": "module",
   "packageManager": "bun@1.4.0",
   "engines": {
-    "node": ">=22"
+    "node": ">=26"
   },
   "repository": {
     "type": "git",
@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",
-    "@t3tris/sdk": "git+https://github.com/t3tris-finance/sdk.git#5c1cb29c1589b5dbea2f7abce85ab1691e1b7901",
+    "@t3tris/sdk": "git+https://github.com/t3tris-finance/sdk.git#a18d63b744944e315a6f95806b6c97d2f44fa0e7",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.2.6",
     "lucide-react": "^1.41.0",
