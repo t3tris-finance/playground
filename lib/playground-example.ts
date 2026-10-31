@@ -44,7 +44,7 @@ export function playgroundExample(call: PlaygroundCall, values: Values): string 
       direction: text(values, "direction"),
       ...page(values),
     });
-  else if (id === "vaults.getMany")
+  else if (id === "vaults.getMany" || id === "keys.hasVaults")
     args = params(
       (csv(text(values, "refs")) ?? ["42161:0x0000000000000000000000000000000000000000"]).map(
         (entry) => {
@@ -113,12 +113,24 @@ export function playgroundExample(call: PlaygroundCall, values: Values): string 
     });
   else if (id === "events.subscribe") {
     return `import { createT3trisClient } from "@t3tris/sdk";\n\nconst client = createT3trisClient({\n  apiKey: process.env.T3TRIS_API_KEY,\n});\n\n// Run on your backend; keep the key in server environment variables.\nfor await (const result of client.events.subscribe(${params({ since: integer(values, "since"), types: csv(text(values, "types")) })})) {\n  console.log(result);\n}`;
-  } else if (id.startsWith("keys.") && !id.endsWith("listVaults"))
+  } else if (id === "keys.create")
     args = params({
-      address: text(values, "address") ?? "0x0000000000000000000000000000000000000000",
-      chainId: integer(values, "chainId"),
+      name: text(values, "name") ?? "Customer key",
+      scopes: csv(text(values, "scopes")),
+      monthlyQuota: integer(values, "monthlyQuota"),
     });
-  else if (id === "keys.listVaults") args = params(page(values));
+  else if (id === "keys.attachVault" || id === "keys.detachVault")
+    args = params({
+      keyId: text(values, "keyId"),
+      vaults: (
+        csv(text(values, "refs")) ?? ["42161:0x0000000000000000000000000000000000000000"]
+      ).map((entry) => {
+        const [chainId, address] = entry.split(":");
+        return { chainId: Number(chainId), address };
+      }),
+    });
+  else if (id === "keys.listVaults")
+    args = params({ ...page(values), keyId: text(values, "keyId") });
   else if (id === "auth.createSiweNonce")
     args = params({
       address: text(values, "address") ?? "0x0000000000000000000000000000000000000000",

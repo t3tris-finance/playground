@@ -331,43 +331,55 @@ export const PLAYGROUND_CALLS: readonly PlaygroundCall[] = [
     ],
   },
   {
-    id: "keys.attachVault",
+    id: "keys.create",
     namespace: "keys",
-    method: "attachVault",
-    description: "Attach a vault to this key. Requires manage scope.",
+    method: "create",
+    description:
+      "Create an independent API key in your organization. Save the secret once. Requires manage.",
     fields: [
-      { key: "address", label: "Vault address", kind: "text", required: true },
-      { key: "chainId", label: "Chain ID", kind: "number" },
+      { key: "name", label: "Key name", kind: "text", required: true },
+      { key: "scopes", label: "Scopes (comma-separated)", kind: "text" },
+      { key: "monthlyQuota", label: "Monthly request quota", kind: "number" },
     ],
   },
-  {
-    id: "keys.detachVault",
+  ...["attachVault", "detachVault"].map((method) => ({
+    id: `keys.${method}`,
     namespace: "keys",
-    method: "detachVault",
-    description: "Detach a vault from this key. Requires manage scope.",
+    method,
+    description: "Atomically update attachments on a key in your organization. Requires manage.",
     fields: [
-      { key: "address", label: "Vault address", kind: "text", required: true },
-      { key: "chainId", label: "Chain ID", kind: "number" },
+      { key: "keyId", label: "Target key ID (blank = calling key)", kind: "text" as const },
+      {
+        key: "refs",
+        label: "Vault refs (chainId:address, comma-separated)",
+        kind: "text" as const,
+        required: true,
+      },
     ],
-  },
+  })),
   {
     id: "keys.listVaults",
     namespace: "keys",
     method: "listVaults",
     description: "List attached vaults with cursor pagination (default 50, maximum 200).",
     fields: [
+      { key: "keyId", label: "Target key ID (requires manage)", kind: "text" },
       { key: "limit", label: "Limit (1–200)", kind: "number" },
       { key: "cursor", label: "Cursor", kind: "text" },
     ],
   },
   {
-    id: "keys.lookupVaults",
+    id: "keys.hasVaults",
     namespace: "keys",
-    method: "lookupVaults",
-    description: "Look up vaults by address.",
+    method: "hasVaults",
+    description: "Check indexed vault availability; returns one boolean per reference.",
     fields: [
-      { key: "address", label: "Vault address", kind: "text", required: true },
-      { key: "chainId", label: "Chain ID", kind: "number" },
+      {
+        key: "refs",
+        label: "Vault refs (chainId:address, comma-separated)",
+        kind: "text",
+        required: true,
+      },
     ],
   },
   {

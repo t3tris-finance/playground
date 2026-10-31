@@ -263,23 +263,20 @@ export async function runPlaygroundCall(
       }
       return events;
     }
+    case "keys.create":
+      return client.keys.create({
+        name: required(values, "name", "Key name"),
+        scopes: list(optional(values, "scopes")) as ("public" | "stream" | "manage")[] | undefined,
+        monthlyQuota: numberValue(values, "monthlyQuota", "Monthly quota", "optional"),
+      });
     case "keys.attachVault":
-      return client.keys.attachVault({
-        address: address(values, "address", "Vault address"),
-        chainId: numberValue(values, "chainId", "Chain ID", "optional"),
-      });
+      return client.keys.attachVault({ keyId: optional(values, "keyId"), vaults: refs(values) });
     case "keys.detachVault":
-      return client.keys.detachVault({
-        address: address(values, "address", "Vault address"),
-        chainId: numberValue(values, "chainId", "Chain ID", "optional"),
-      });
+      return client.keys.detachVault({ keyId: optional(values, "keyId"), vaults: refs(values) });
     case "keys.listVaults":
-      return client.keys.listVaults(page(values));
-    case "keys.lookupVaults":
-      return client.keys.lookupVaults({
-        address: address(values, "address", "Vault address"),
-        chainId: numberValue(values, "chainId", "Chain ID", "optional"),
-      });
+      return client.keys.listVaults({ ...page(values), keyId: optional(values, "keyId") });
+    case "keys.hasVaults":
+      return client.keys.hasVaults(refs(values));
     case "billing.getUsage":
       return client.billing.getUsage();
     case "auth.createSiweNonce":

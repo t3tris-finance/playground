@@ -43,7 +43,7 @@ describe("customer-key playground", () => {
       Object.keys(entries).map((method) => `${namespace}.${method}`),
     );
     expect(PLAYGROUND_CALLS.map((call) => call.id).sort()).toEqual(methods.sort());
-    expect(PLAYGROUND_CALLS).toHaveLength(36);
+    expect(PLAYGROUND_CALLS).toHaveLength(37);
     for (const call of PLAYGROUND_CALLS) {
       const code = playgroundExample(call, {});
       expect(code).toContain(`client.${call.id}(`);
