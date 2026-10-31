@@ -42,7 +42,7 @@ test("every generated SDK example compiles against the installed package", () =>
       getNewLine: () => "\n",
     });
     expect(message).toBe("");
-    expect(files).toHaveLength(131);
+    expect(files).toHaveLength(129);
   } finally {
     rmSync(scratch, { recursive: true, force: true });
   }

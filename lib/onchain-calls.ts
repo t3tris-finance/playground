@@ -254,9 +254,6 @@ export const ONCHAIN_CALLS: readonly OnchainCall[] = [
   ),
   call("vaults.pause", true, vault, (c, i) => c.vaults.pause(i)),
   call("vaults.unpause", true, vault, (c, i) => c.vaults.unpause(i)),
-  call("vaults.close", true, { ...vault, unsafe: false, minAssetsOut: 0n }, (c, i) =>
-    c.vaults.close(i),
-  ),
   call(
     "vaults.enableEndOfFund",
     true,
@@ -346,7 +343,6 @@ export const ONCHAIN_CALLS: readonly OnchainCall[] = [
     { ...vault, feeClaimType: 0 as const },
     (c, i) => c.vaults.read.previewEnableEndOfFund(i),
   ),
-  call("vaults.read.previewCloseFund", false, vault, (c, i) => c.vaults.read.previewCloseFund(i)),
   call("vaults.read.previewClaimFees", false, { ...vault, shares: 1000000n }, (c, i) =>
     c.vaults.read.previewClaimFees(i),
   ),

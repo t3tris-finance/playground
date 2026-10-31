@@ -55,7 +55,7 @@ describe("on-chain playground", () => {
       ),
     );
     expect(ONCHAIN_CALLS.map((call) => call.id).sort()).toEqual(methods.sort());
-    expect(new Set(methods).size).toBe(96);
+    expect(new Set(methods).size).toBe(94);
     for (const call of ONCHAIN_CALLS) {
       const code = onchainExample(call, inputJson(call.sample));
       expect(code).toContain(`client.${call.id}(`);
