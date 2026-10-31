@@ -141,7 +141,6 @@ export const ONCHAIN_CALLS: readonly OnchainCall[] = [
     true,
     {
       chainId: 42161,
-      factory: address,
       salt: bytes32,
       oracle: address,
       safeOracle: {
@@ -162,7 +161,6 @@ export const ONCHAIN_CALLS: readonly OnchainCall[] = [
         depositEnabled: false,
         depositWhitelistEnabled: false,
         withdrawWhitelistEnabled: false,
-        vaultOpened: false,
         globalFees: {
           entryFeeWad: 0n,
           exitFeeWad: 0n,
@@ -175,22 +173,10 @@ export const ONCHAIN_CALLS: readonly OnchainCall[] = [
     (c, i) => c.vaults.create(i),
   ),
   call(
-    "vaults.deposit",
-    true,
-    { ...vault, amount: 1000000n, receiver: address, permit2Data: "0x" as Hex },
-    (c, i) => c.vaults.deposit(i),
-  ),
-  call(
     "vaults.requestDeposit",
     true,
     { ...vault, amount: 1000000n, controller: address, permit2Data: "0x" as Hex },
     (c, i) => c.vaults.requestDeposit(i),
-  ),
-  call(
-    "vaults.redeem",
-    true,
-    { ...vault, shares: 1000000n, receiver: address, owner: address },
-    (c, i) => c.vaults.redeem(i),
   ),
   call(
     "vaults.requestRedeem",
@@ -261,12 +247,6 @@ export const ONCHAIN_CALLS: readonly OnchainCall[] = [
   ),
   call("vaults.pause", true, vault, (c, i) => c.vaults.pause(i)),
   call("vaults.unpause", true, vault, (c, i) => c.vaults.unpause(i)),
-  call(
-    "vaults.open",
-    true,
-    { ...vault, feeClaimType: 0 as const, unsafe: false, permit2Data: "0x" as Hex },
-    (c, i) => c.vaults.open(i),
-  ),
   call("vaults.close", true, { ...vault, unsafe: false, minAssetsOut: 0n }, (c, i) =>
     c.vaults.close(i),
   ),
@@ -353,9 +333,6 @@ export const ONCHAIN_CALLS: readonly OnchainCall[] = [
   call("vaults.read.previewSettleRedemptions", false, { ...vault, fullClaim: false }, (c, i) =>
     c.vaults.read.previewSettleRedemptions(i),
   ),
-  call("vaults.read.previewOpen", false, { ...vault, feeClaimType: 0 as const }, (c, i) =>
-    c.vaults.read.previewOpen(i),
-  ),
   call(
     "vaults.read.previewEnableEndOfFund",
     false,
@@ -378,23 +355,11 @@ export const ONCHAIN_CALLS: readonly OnchainCall[] = [
   call(
     "vaults.read.previewAddress",
     false,
-    { chainId: 42161, factory: address, deployer: address, salt: bytes32 },
+    { chainId: 42161, deployer: address, salt: bytes32 },
     (c, i) => c.vaults.read.previewAddress(i),
   ),
   call("vaults.read.asset", false, vault, (c, i) => c.vaults.read.asset(i)),
   call("vaults.read.totalSupply", false, vault, (c, i) => c.vaults.read.totalSupply(i)),
-  call("vaults.read.maxDeposit", false, { ...vault, receiver: address }, (c, i) =>
-    c.vaults.read.maxDeposit(i),
-  ),
-  call("vaults.read.maxRedeem", false, { ...vault, owner: address }, (c, i) =>
-    c.vaults.read.maxRedeem(i),
-  ),
-  call("vaults.read.previewDeposit", false, { ...vault, amount: 1000000n }, (c, i) =>
-    c.vaults.read.previewDeposit(i),
-  ),
-  call("vaults.read.previewRedeem", false, { ...vault, shares: 1000000n }, (c, i) =>
-    c.vaults.read.previewRedeem(i),
-  ),
   call("vaults.read.previewClaimDeposit", false, { ...vault, owner: address }, (c, i) =>
     c.vaults.read.previewClaimDeposit(i),
   ),
