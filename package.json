@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",
-    "@t3tris/sdk": "git+https://github.com/t3tris-finance/sdk.git#d67747f12e36546b700289d3d7c21cef84774935",
+    "@t3tris/sdk": "git+https://github.com/t3tris-finance/sdk.git#2483477574e473d79eb3a26a35e46a483fa42548",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.2.6",
     "lucide-react": "^1.41.0",

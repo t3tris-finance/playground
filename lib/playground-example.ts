@@ -141,11 +141,6 @@ export function playgroundExample(call: PlaygroundCall, values: Values): string 
       message: text(values, "message") ?? "<signed SIWE message>",
       signature: text(values, "signature") ?? "0x0000000000000000000000000000000000000000",
     });
-  else if (["auth.registerEmail", "auth.loginEmail"].includes(id))
-    args = params({
-      email: text(values, "email") ?? "you@example.com",
-      password: text(values, "password") ?? "<password>",
-    });
   else if (["auth.whoami", "auth.logout", "auth.logoutAll"].includes(id)) args = sess;
   return `import { createT3trisClient } from "@t3tris/sdk";\n\n// Run on your backend; keep the key in server environment variables.\nconst client = createT3trisClient({\n  apiKey: process.env.T3TRIS_API_KEY,\n});\n${call.session ? "// Set T3TRIS_SESSION to your own authenticated ss_ session.\n" : ""}\nconst result = await client.${id}(${args});\nconsole.log(result);`;
 }

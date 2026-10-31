@@ -410,26 +410,6 @@ export const PLAYGROUND_CALLS: readonly PlaygroundCall[] = [
     ],
   },
   {
-    id: "auth.registerEmail",
-    namespace: "auth",
-    method: "registerEmail",
-    description: "Register an email account.",
-    fields: [
-      { key: "email", label: "Email", kind: "text", required: true },
-      { key: "password", label: "Password", kind: "text", required: true },
-    ],
-  },
-  {
-    id: "auth.loginEmail",
-    namespace: "auth",
-    method: "loginEmail",
-    description: "Log in with email.",
-    fields: [
-      { key: "email", label: "Email", kind: "text", required: true },
-      { key: "password", label: "Password", kind: "text", required: true },
-    ],
-  },
-  {
     id: "auth.whoami",
     namespace: "auth",
     method: "whoami",

@@ -289,16 +289,6 @@ export async function runPlaygroundCall(
         message: required(values, "message", "SIWE message"),
         signature: required(values, "signature", "Signature") as `0x${string}`,
       });
-    case "auth.registerEmail":
-      return client.auth.registerEmail({
-        email: required(values, "email", "Email"),
-        password: required(values, "password", "Password"),
-      });
-    case "auth.loginEmail":
-      return client.auth.loginEmail({
-        email: required(values, "email", "Email"),
-        password: required(values, "password", "Password"),
-      });
     case "auth.whoami":
       return client.auth.whoami(auth as { session: string });
     case "auth.logout":

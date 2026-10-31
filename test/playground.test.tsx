@@ -43,7 +43,7 @@ describe("customer-key playground", () => {
       Object.keys(entries).map((method) => `${namespace}.${method}`),
     );
     expect(PLAYGROUND_CALLS.map((call) => call.id).sort()).toEqual(methods.sort());
-    expect(PLAYGROUND_CALLS).toHaveLength(37);
+    expect(PLAYGROUND_CALLS).toHaveLength(35);
     for (const call of PLAYGROUND_CALLS) {
       const code = playgroundExample(call, {});
       expect(code).toContain(`client.${call.id}(`);
@@ -74,8 +74,8 @@ describe("customer-key playground", () => {
 
   test("captures issued sessions only from successful auth call results", () => {
     expect(sessionFromResult("auth.verifySiwe", { token: "ss_12345678" })).toBe("ss_12345678");
-    expect(sessionFromResult("auth.loginEmail", { token: "ss_12345678" })).toBe("ss_12345678");
-    expect(sessionFromResult("auth.registerEmail", { token: "ss_12345678" })).toBe("ss_12345678");
+    expect(sessionFromResult("auth.loginEmail", { token: "ss_12345678" })).toBeUndefined();
+    expect(sessionFromResult("auth.registerEmail", { token: "ss_12345678" })).toBeUndefined();
     expect(sessionFromResult("vaults.get", { token: "ss_12345678" })).toBeUndefined();
     expect(sessionFromResult("auth.verifySiwe", { token: "sk_12345678" })).toBeUndefined();
   });

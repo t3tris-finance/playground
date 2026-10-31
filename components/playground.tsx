@@ -21,7 +21,7 @@ type Failure = { code: string; message: string };
 /** Session tokens stay in this component's memory only, never localStorage or cookies. */
 export function sessionFromResult(callId: string, result: unknown): string | undefined {
   if (
-    !["auth.verifySiwe", "auth.registerEmail", "auth.loginEmail"].includes(callId) ||
+    callId !== "auth.verifySiwe" ||
     typeof result !== "object" ||
     result === null ||
     !("token" in result) ||
