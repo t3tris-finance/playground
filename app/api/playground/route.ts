@@ -1,4 +1,4 @@
-import { ApiError, createT3trisClient } from "@t3tris/sdk";
+import { ApiError, createT3trisClient } from "@t3tris-labs/sdk";
 import { PlaygroundInputError, parsePlaygroundInput } from "@/lib/playground";
 import { playgroundFailure, runPlaygroundCall } from "@/lib/playground-runner";
 

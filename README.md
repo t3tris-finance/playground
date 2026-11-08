@@ -2,16 +2,17 @@
 
 Explore API and on-chain methods, edit their inputs, and copy ready-to-use TypeScript examples.
 
-Uses SDK [v0.7.0](https://github.com/t3tris-finance/sdk/tree/v0.7.0).
+Uses [`@t3tris-labs/sdk@0.7.1`](https://www.npmjs.com/package/@t3tris-labs/sdk/v/0.7.1) from npm, pinned in `package.json` and `bun.lock`.
 API `/v0` and SDK `0.x` are unstable: breaking changes may occur before `/v1`
 and SDK `1.0.0`. Pinning the SDK does not freeze the API server.
-Both modes use `createT3trisClient` from `@t3tris/sdk`.
-Optional protocol and provider helpers come from `@t3tris/sdk/onchain`.
+Both modes use `createT3trisClient` from `@t3tris-labs/sdk`.
+Optional protocol and provider helpers come from `@t3tris-labs/sdk/onchain`.
 
 ## Quick start
 
-Requires [Bun 1.4+](https://bun.sh), Node.js 26 LTS (`.nvmrc`) and Git.
-The playground application uses Node.js 26; the SDK itself supports Node.js 22+.
+Requires [Bun 1.4+](https://bun.sh), Node.js 22+ and Git to clone this playground.
+`.nvmrc` selects Node.js 22, the minimum supported runtime for both the app and SDK.
+The SDK itself installs from npm and does not require Git.
 
 ```sh
 git clone https://github.com/t3tris-finance/playground.git
@@ -51,5 +52,19 @@ bun run build
 bun start
 ```
 
-[SDK documentation](https://github.com/t3tris-finance/sdk#readme) ·
+## Dependency maintenance
+
+Direct dependencies are used by application code, CSS, configuration or tests. In particular,
+`tw-animate-css` powers the select animations, and the TypeScript compiler validates every
+copyable example. TypeScript stays on 6.0.x because the test uses its compiler API; moving to
+TypeScript 7 requires migrating that API, not just changing the version range.
+
+```sh
+bun run lint
+bun run typecheck
+bun test
+bun run build
+```
+
+[SDK documentation](https://docs.t3tris.finance/developers/overview) ·
 [Report an issue](https://github.com/t3tris-finance/playground/issues)

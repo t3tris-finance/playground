@@ -1,6 +1,6 @@
 "use client";
 
-import { injectedProvider, requestAccounts } from "@t3tris/sdk/onchain";
+import { injectedProvider, requestAccounts } from "@t3tris-labs/sdk/onchain";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {

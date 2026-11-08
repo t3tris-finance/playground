@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { createT3trisClient } from "@t3tris/sdk";
+import { createT3trisClient } from "@t3tris-labs/sdk";
 import { renderToStaticMarkup } from "react-dom/server";
 import {
   createPublicClient,
