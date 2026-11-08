@@ -2,7 +2,7 @@
 
 Explore API and on-chain methods, edit their inputs, and copy ready-to-use TypeScript examples.
 
-Uses [`@t3tris-labs/sdk@0.7.1`](https://www.npmjs.com/package/@t3tris-labs/sdk/v/0.7.1) from npm, pinned in `package.json` and `bun.lock`.
+Uses [`@t3tris-labs/sdk@0.8.0`](https://www.npmjs.com/package/@t3tris-labs/sdk/v/0.8.0) from npm, pinned in `package.json` and `bun.lock`.
 API `/v0` and SDK `0.x` are unstable: breaking changes may occur before `/v1`
 and SDK `1.0.0`. Pinning the SDK does not freeze the API server.
 Both modes use `createT3trisClient` from `@t3tris-labs/sdk`.
