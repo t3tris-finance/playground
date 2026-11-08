@@ -94,6 +94,14 @@ export function playgroundExample(call: PlaygroundCall, values: Values): string 
       address: text(values, "address") ?? "0x0000000000000000000000000000000000000000",
     };
     if (id === "accounts.portfolio" || id === "accounts.listFavorites") args = params(identity);
+    else if (id === "accounts.getPositionPnl")
+      args = params({
+        ...identity,
+        vault: {
+          chainId: integer(values, "chainId") ?? 42161,
+          address: text(values, "vault") ?? "0x0000000000000000000000000000000000000000",
+        },
+      });
     else if (id === "accounts.setFavorite" || id === "accounts.deleteFavorite") {
       args = `${params({ ...identity, chainId: integer(values, "chainId") ?? 42161, vault: text(values, "vault") ?? "0x0000000000000000000000000000000000000000", ...(id === "accounts.setFavorite" ? { pinned: text(values, "pinned") === "true" } : {}) })}, ${sess}`;
     } else
@@ -112,7 +120,7 @@ export function playgroundExample(call: PlaygroundCall, values: Values): string 
       ...page(values),
     });
   else if (id === "events.subscribe") {
-    return `import { createT3trisClient } from "@t3tris/sdk";\n\nconst client = createT3trisClient({\n  apiKey: process.env.T3TRIS_API_KEY,\n});\n\n// Run on your backend; keep the key in server environment variables.\nfor await (const result of client.events.subscribe(${params({ since: integer(values, "since"), types: csv(text(values, "types")) })})) {\n  console.log(result);\n}`;
+    return `import { createT3trisClient } from "@t3tris-labs/sdk";\n\nconst client = createT3trisClient({\n  apiKey: process.env.T3TRIS_API_KEY,\n});\n\n// Run on your backend; keep the key in server environment variables.\nfor await (const result of client.events.subscribe(${params({ since: integer(values, "since"), types: csv(text(values, "types")) })})) {\n  console.log(result);\n}`;
   } else if (id === "keys.create")
     args = params({
       name: text(values, "name") ?? "Customer key",
@@ -142,5 +150,5 @@ export function playgroundExample(call: PlaygroundCall, values: Values): string 
       signature: text(values, "signature") ?? "0x0000000000000000000000000000000000000000",
     });
   else if (["auth.whoami", "auth.logout", "auth.logoutAll"].includes(id)) args = sess;
-  return `import { createT3trisClient } from "@t3tris/sdk";\n\n// Run on your backend; keep the key in server environment variables.\nconst client = createT3trisClient({\n  apiKey: process.env.T3TRIS_API_KEY,\n});\n${call.session ? "// Set T3TRIS_SESSION to your own authenticated ss_ session.\n" : ""}\nconst result = await client.${id}(${args});\nconsole.log(result);`;
+  return `import { createT3trisClient } from "@t3tris-labs/sdk";\n\n// Run on your backend; keep the key in server environment variables.\nconst client = createT3trisClient({\n  apiKey: process.env.T3TRIS_API_KEY,\n});\n${call.session ? "// Set T3TRIS_SESSION to your own authenticated ss_ session.\n" : ""}\nconst result = await client.${id}(${args});\nconsole.log(result);`;
 }

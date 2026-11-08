@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { createT3trisClient } from "@t3tris/sdk";
+import { createT3trisClient } from "@t3tris-labs/sdk";
 import { renderToStaticMarkup } from "react-dom/server";
 import { Playground, sessionFromResult } from "../components/playground";
 import { CodePanel, ResponsePanel } from "../components/playground-panels";
@@ -14,7 +14,7 @@ describe("customer-key playground", () => {
     expect(html).toContain("catalog.listChains");
     expect(html).not.toContain("Session token (ss_");
     expect(html).toContain("disabled");
-    expect(html).not.toContain("npm install @t3tris/sdk");
+    expect(html).not.toContain("npm install @t3tris-labs/sdk");
     expect(html).not.toContain("Install the SDK");
     expect(html).not.toContain("same-origin BFF");
     expect(html).not.toContain("git+ssh:");
@@ -43,7 +43,7 @@ describe("customer-key playground", () => {
       Object.keys(entries).map((method) => `${namespace}.${method}`),
     );
     expect(PLAYGROUND_CALLS.map((call) => call.id).sort()).toEqual(methods.sort());
-    expect(PLAYGROUND_CALLS).toHaveLength(35);
+    expect(PLAYGROUND_CALLS).toHaveLength(36);
     for (const call of PLAYGROUND_CALLS) {
       const code = playgroundExample(call, {});
       expect(code).toContain(`client.${call.id}(`);
@@ -92,6 +92,28 @@ describe("customer-key playground", () => {
       items: [{ id: 2 }],
     });
     expect(input.apiKey).toBe("sk_12345678");
+  });
+
+  test("historical PnL uses the account and nested vault reference without a session", async () => {
+    const wallet = "0x1111111111111111111111111111111111111111";
+    const vault = "0x2222222222222222222222222222222222222222";
+    const input = parsePlaygroundInput({
+      call: "accounts.getPositionPnl",
+      apiKey: "sk_customer_test",
+      values: { address: wallet, chainId: "4663", vault },
+    });
+    const expected = { address: wallet, vault: { chainId: 4663, address: vault } };
+    const client = {
+      accounts: { getPositionPnl: async (value: unknown) => value },
+    } as Parameters<typeof runPlaygroundCall>[0];
+    expect(await runPlaygroundCall(client, input.call, input.values, input.session)).toEqual(
+      expected,
+    );
+    expect(input.session).toBeUndefined();
+    const code = playgroundExample(input.call, input.values);
+    expect(code).toContain('from "@t3tris-labs/sdk"');
+    expect(code).toContain("client.accounts.getPositionPnl(");
+    expect(code).toContain('"vault": {');
   });
 
   test("renders copyable example immediately, without embedding the entered key", () => {

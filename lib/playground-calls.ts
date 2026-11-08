@@ -264,6 +264,17 @@ export const PLAYGROUND_CALLS: readonly PlaygroundCall[] = [
     ],
   },
   {
+    id: "accounts.getPositionPnl",
+    namespace: "accounts",
+    method: "getPositionPnl",
+    description: "Read historical cash-flow-neutral PnL in underlying asset units.",
+    fields: [
+      { key: "address", label: "Account address", kind: "text", required: true },
+      { key: "chainId", label: "Chain ID", kind: "number", required: true },
+      { key: "vault", label: "Vault address", kind: "text", required: true },
+    ],
+  },
+  {
     id: "accounts.listActivity",
     namespace: "accounts",
     method: "listActivity",

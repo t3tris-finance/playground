@@ -1,5 +1,5 @@
-import { ApiError, type T3trisClient } from "@t3tris/sdk";
-import type { Address } from "@t3tris/sdk/entities";
+import { ApiError, type T3trisClient } from "@t3tris-labs/sdk";
+import type { Address } from "@t3tris-labs/sdk/entities";
 
 import type { PlaygroundCall } from "./playground-calls";
 
@@ -195,6 +195,14 @@ export async function runPlaygroundCall(
         address: address(values, "address", "Account address"),
         chainId: numberValue(values, "chainId", "Chain ID", "optional"),
         ...page(values),
+      });
+    case "accounts.getPositionPnl":
+      return client.accounts.getPositionPnl({
+        address: address(values, "address", "Account address"),
+        vault: {
+          chainId: numberValue(values, "chainId", "Chain ID", "required") as number,
+          address: address(values, "vault", "Vault address"),
+        },
       });
     case "accounts.listActivity":
       return client.accounts.listActivity({
