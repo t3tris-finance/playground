@@ -2,7 +2,7 @@
 
 Explore API and on-chain methods, edit their inputs, and copy ready-to-use TypeScript examples.
 
-Uses [`@t3tris-labs/sdk@0.8.0`](https://www.npmjs.com/package/@t3tris-labs/sdk/v/0.8.0) from npm, pinned in `package.json` and `bun.lock`.
+Uses [`@t3tris-labs/sdk@0.8.2`](https://www.npmjs.com/package/@t3tris-labs/sdk/v/0.8.2) from npm, pinned in `package.json` and `bun.lock`.
 API `/v0` and SDK `0.x` are unstable: breaking changes may occur before `/v1`
 and SDK `1.0.0`. Pinning the SDK does not freeze the API server.
 Both modes use `createT3trisClient` from `@t3tris-labs/sdk`.
@@ -37,6 +37,9 @@ and are not saved in browser storage. Use only a server you trust.
 Select a method to view its payload and viem example. To execute it, connect a
 wallet extension, select the correct network in your wallet and enter the target
 addresses. Amounts use raw token units, represented as integer strings in the editor.
+
+Implicit CCIP Read is disabled on the playground's public client and in copied examples;
+contract responses cannot trigger automatic off-chain gateway requests.
 
 Each write submits one transaction. Network switching, token approvals and Permit2
 signatures are separate, explicit operations. A `submitted` result is not a mining

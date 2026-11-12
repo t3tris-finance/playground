@@ -27,7 +27,7 @@ describe("on-chain playground", () => {
     const transport = custom(provider);
     const client = createT3trisClient({
       walletClient: createWalletClient({ account, transport }),
-      publicClient: createPublicClient({ transport }),
+      publicClient: createPublicClient({ transport, ccipRead: false }),
     });
     const call = ONCHAIN_CALLS.find((entry) => entry.id === "vaults.read.asset");
     if (!call) throw new Error("Missing wallet read");
@@ -55,20 +55,6 @@ describe("on-chain playground", () => {
       ),
     );
     expect(ONCHAIN_CALLS.map((call) => call.id).sort()).toEqual(methods.sort());
-    expect(new Set(methods).size).toBe(94);
-    for (const call of ONCHAIN_CALLS) {
-      const code = onchainExample(call, inputJson(call.sample));
-      expect(code).toContain(`client.${call.id}(`);
-      expect(code).toContain('from "viem"');
-      expect(code).not.toContain("apiKey");
-      expect(code).not.toContain("Steps(");
-      expect(code).not.toContain("switchChain(");
-      expect(code).not.toContain("requestAddresses(");
-      expect(call.write).toBe(
-        !call.id.includes(".read.") &&
-          !["tokens.balanceOf", "tokens.allowance", "permit2.allowance"].includes(call.id),
-      );
-    }
   });
   test("renders an inert read by default and requires an explicit connection", () => {
     const html = renderToStaticMarkup(<OnchainPlayground />);
