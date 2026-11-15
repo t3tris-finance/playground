@@ -78,7 +78,7 @@ export function OnchainPlayground() {
         throw new Error("Account changed. Connect the selected wallet again.");
       const currentChain = await walletClient.getChainId();
       setChainId(currentChain);
-      const publicClient = createPublicClient({ transport });
+      const publicClient = createPublicClient({ transport, ccipRead: false });
       const client = createT3trisClient({ walletClient, publicClient });
       const result = await call.run(client, input);
       setResponse(JSON.parse(inputJson(result ?? null)));
